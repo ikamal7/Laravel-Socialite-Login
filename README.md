@@ -34,4 +34,4 @@ The application will be available at `http://localhost:8000`.
 License
 -------
 
-This project is open-sourced software licensed under the \[MIT license\]([https://opensource](https://opensource).
+This project is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).

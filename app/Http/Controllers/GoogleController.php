@@ -6,36 +6,37 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-use Laravel\Socialite\Facades\Socialite;
 use Illuminate\Support\Str;
+use Laravel\Socialite\Facades\Socialite;
 
-class GithubController extends Controller
+class GoogleController extends Controller
 {
-    public function redirect()
+    public function redirectToGoogle()
     {
-        return Socialite::driver('github')->redirect();
+        return Socialite::driver('google')->redirect();
     }
 
-    public function callback()
+    public function handleGoogleCallback()
     {
-        try {
-            $user = Socialite::driver('github')->user();
+        try
+        {
+            $user = Socialite::driver('google')->user();
 
-            $gitUser = User::updateOrCreate([
-                'github_id' => $user->id
+            $googleUser = User::updateOrCreate([
+                'google_id' => $user->id
             ], [
                 'name' => $user->name,
                 'nickname' => $user->nickname,
                 'email' => $user->email,
-                'github_id' => $user->id,
-                'auth_type' => 'github',
+                'google_id' => $user->id,
+                'auth_type' => 'google',
                 'password' => Hash::make( Str::random(10) ),
             ]);
 
-            Auth::login( $gitUser);
+            Auth::login( $googleUser);
             return redirect()->route('dashboard');
-
-        }catch (\Exception $e) {
+        }
+        catch (\Exception $e){
             $error = $e->getMessage();
             return redirect()->route('login')->with('error', $error);
         }
